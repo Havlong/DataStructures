@@ -21,7 +21,7 @@ import kotlin.system.measureTimeMillis
  * @author havlong
  * @version 1.0
  */
-class MainFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 1"), ActionListener {
+class MainFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 3"), ActionListener {
     private val exitButton = JButton("Закрыть")
     private val executeButton = JButton("Рассчитать")
 
@@ -114,7 +114,7 @@ class MainFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 1"), Actio
                     hashMap[it.modHash(HASH_MOD)] = sortedSetOf(it)
                 }
             }
-            cur["mod"] = hashMap.count { it.value.size > 1 }
+            cur["mod"] = hashMap.values.sumBy { it.size - 1 }
             for (i in keyList.indices)
                 keyList[i] = Random.nextInt(0, 65001)
             hashMap.clear()
@@ -125,7 +125,7 @@ class MainFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 1"), Actio
                     hashMap[it.sqrHash(DIGITS_COUNT, N)] = sortedSetOf(it)
                 }
             }
-            cur["sqr"] = hashMap.count { it.value.size > 1 }
+            cur["sqr"] = hashMap.values.sumBy { it.size - 1 }
             for (i in keyList.indices)
                 keyList[i] = Random.nextInt(0, 65001)
             hashMap.clear()
@@ -136,7 +136,7 @@ class MainFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 1"), Actio
                     hashMap[it.sumHash(N)] = sortedSetOf(it)
                 }
             }
-            cur["sum"] = hashMap.count { it.value.size > 1 }
+            cur["sum"] = hashMap.values.sumBy { it.size - 1 }
             for (i in keyList.indices)
                 keyList[i] = Random.nextInt(0, 65001)
             hashMap.clear()
@@ -147,7 +147,7 @@ class MainFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 1"), Actio
                     hashMap[it.constHash(N)] = sortedSetOf(it)
                 }
             }
-            cur["const"] = hashMap.count { it.value.size > 1 }
+            cur["const"] = hashMap.values.sumBy { it.size - 1 }
             val min = cur.minBy { it.value }!!.key
             answer[min] = answer[min]!! + 1
         }
@@ -188,7 +188,7 @@ class MainFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 1"), Actio
                         }
                     }
                 }
-                var countL = 0L
+                var countL = 10000L
                 var foundL = 0L
                 val timeL = measureTimeMillis {
                     searchKeyArray.forEach {
@@ -198,7 +198,7 @@ class MainFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 1"), Actio
                             if (x == it)
                                 break
                         }
-                        if (x in links[hash])
+                        if (it in links[hash])
                             foundL++
                     }
                 }
@@ -232,7 +232,7 @@ class MainFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 1"), Actio
                         }
                     }
                 }
-                var countL = 0L
+                var countL = 10000L
                 var foundL = 0L
                 val timeL = measureTimeMillis {
                     searchKeyArray.forEach {
@@ -276,7 +276,7 @@ class MainFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 1"), Actio
                         }
                     }
                 }
-                var countL = 0L
+                var countL = 10000L
                 var foundL = 0L
                 val timeL = measureTimeMillis {
                     searchKeyArray.forEach {
@@ -286,7 +286,7 @@ class MainFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 1"), Actio
                             if (x == it)
                                 break
                         }
-                        if (x in links[hash])
+                        if (it in links[hash])
                             foundL++
                     }
                 }
@@ -320,7 +320,7 @@ class MainFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 1"), Actio
                         }
                     }
                 }
-                var countL = 0L
+                var countL = 10000L
                 var foundL = 0L
                 val timeL = measureTimeMillis {
                     searchKeyArray.forEach {
@@ -330,7 +330,7 @@ class MainFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 1"), Actio
                             if (x == it)
                                 break
                         }
-                        if (x in links[hash])
+                        if (it in links[hash])
                             foundL++
                     }
                 }
@@ -363,12 +363,7 @@ class MainFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 1"), Actio
         }
         count -= COUNT
         return if (count < 0) {
-            count = (-count) / 2
-            x = 1
-            for (i in 1..count) {
-                x *= 10
-            }
-            sqr * x
+            sqr % N
         } else {
             count /= 2
             x = 1

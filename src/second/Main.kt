@@ -3,12 +3,15 @@ package second
 import java.awt.*
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
-import javax.swing.*
+import javax.swing.JButton
+import javax.swing.JFrame
+import javax.swing.JLabel
+import javax.swing.JTextField
 import kotlin.random.Random
 import kotlin.system.exitProcess
 import kotlin.system.measureTimeMillis
 
-class MainFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 1"), ActionListener {
+class MainFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 2"), ActionListener {
     private val exitButton = JButton("Закрыть")
     private val executeButton = JButton("Поиск")
 
