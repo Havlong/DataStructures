@@ -73,11 +73,12 @@ class MainFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 4") {
 
     private fun addNewWord(word: String) {
         var pos = 0
-        var prevPos = 0
-        for (c in word) {
+        var prevPos: Int
+        for (i in (0 until word.length - 1)) {
+            val c = word[i]
             prevPos = pos
             for ((char, nextPos) in tree[pos]) {
-                if (char == c) {
+                if (char == c && nextPos != -1) {
                     pos = nextPos
                     break
                 }
@@ -88,7 +89,12 @@ class MainFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 4") {
                 tree[prevPos].add(c to pos)
             }
         }
-        searchStatus.text = "Слово добавлено или просмотрено"
+        if ((word.last() to -1) in tree[pos]) {
+            searchStatus.text = "Слово существует"
+        } else {
+            tree[pos].add((word.last() to -1))
+            searchStatus.text = "Слово добавлено"
+        }
         wordSet.add(word)
         listLabel.text = wordSet.joinToString(
             separator = "</li><li>",
@@ -99,11 +105,12 @@ class MainFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 4") {
 
     private fun findWord(word: String) {
         var pos = 0
-        var prevPos = 0
-        for (c in word) {
+        var prevPos: Int
+        for (i in (0 until word.length - 1)) {
+            val c = word[i]
             prevPos = pos
             for ((char, nextPos) in tree[pos]) {
-                if (char == c) {
+                if (char == c && nextPos != -1) {
                     pos = nextPos
                     break
                 }
@@ -113,10 +120,11 @@ class MainFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 4") {
                 return
             }
         }
-        if (pos < tree.size && tree[pos].isEmpty())
+        if ((word.last() to -1) in tree[pos]) {
             searchStatus.text = "Слово найдено"
-        else
-            searchStatus.text = "Слово является подстрокой"
+        } else {
+            searchStatus.text = "Слово не найдено"
+        }
     }
 
     private fun clearTree() {
