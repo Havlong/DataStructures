@@ -1,11 +1,9 @@
 package fifth
 
-import java.awt.*
-import java.awt.event.ActionEvent
-import java.awt.event.ActionListener
-import javax.swing.*
-import kotlin.system.exitProcess
-import kotlin.system.measureTimeMillis
+import java.awt.Component
+import java.awt.Container
+import java.awt.Font
+import javax.swing.SwingUtilities
 
 /**
  * 12.12.2019
@@ -14,101 +12,6 @@ import kotlin.system.measureTimeMillis
  * @author Havlong
  * @version v1.0
  */
-class MainFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 4"), ActionListener {
-    companion object {
-        val myFont = Font(null, Font.BOLD, 18)
-        var swapCounter = 0L
-        var comparisonCounter = 0L
-    }
-
-    private val exitButton = JButton("Закрыть")
-    private val executeButton = JButton("Рассчитать")
-
-    private val bubbleLabel = JLabel("Счётчик метода прямого обмена")
-    private val bubbleLabelScore = JLabel("")
-
-    private val selectionLabel = JLabel("Счётчик метода прямого выбора")
-    private val selectionLabelScore = JLabel("")
-
-    private val insertionLabel = JLabel("Счётчик метода прямого включения")
-    private val insertionLabelScore = JLabel("")
-
-    private val shellLabel = JLabel("Счётчик метода Шелла")
-    private val shellLabelScore = JLabel("")
-
-    private val linearLabel = JLabel("Счётчик линейного метода")
-    private val linearLabelScore = JLabel("")
-
-    private val enterLabel = JLabel("Введите размер массива для сортировки: ")
-    private val countField = JTextField("1", 4)
-
-    init {
-        defaultCloseOperation = EXIT_ON_CLOSE
-        isUndecorated = true
-        fillFrame(contentPane)
-        pack()
-        setSize(sizeX, sizeY)
-        val screenSize = Toolkit.getDefaultToolkit().screenSize
-        setLocation((screenSize.width - sizeX) / 2, (screenSize.height - sizeY) / 2)
-        isVisible = true
-    }
-
-    private fun fillFrame(panel: Container) {
-        panel.componentOrientation = ComponentOrientation.LEFT_TO_RIGHT
-        panel.layout = GridLayout(7, 2)
-
-        countField.addActionListener(this)
-        panel.addWithFont(enterLabel)
-        panel.addWithFont(countField)
-
-        panel.addWithFont(bubbleLabel)
-        panel.addWithFont(bubbleLabelScore)
-
-        panel.addWithFont(selectionLabel)
-        panel.addWithFont(selectionLabelScore)
-
-        panel.addWithFont(insertionLabel)
-        panel.addWithFont(insertionLabelScore)
-
-        panel.addWithFont(shellLabel)
-        panel.addWithFont(shellLabelScore)
-
-        panel.addWithFont(linearLabel)
-        panel.addWithFont(linearLabelScore)
-
-        executeButton.addActionListener(this)
-        exitButton.addActionListener {
-            exitProcess(0)
-        }
-
-        panel.addWithFont(executeButton)
-        panel.addWithFont(exitButton)
-    }
-
-    override fun actionPerformed(event: ActionEvent) {
-        val n = countField.text.toInt()
-        if (n > 10000)
-            return
-        val list = randomList(n)
-        var listCopy = ArrayList(list)
-        var time = measureTimeMillis(listCopy::bubbleSort)
-        bubbleLabelScore.text = "$time мс; $comparisonCounter сравнений; $swapCounter обменов"
-        listCopy = ArrayList(list)
-        time = measureTimeMillis(listCopy::selectionSort)
-        selectionLabelScore.text = "$time мс; $comparisonCounter сравнений; $swapCounter обменов"
-        listCopy = ArrayList(list)
-        time = measureTimeMillis(listCopy::insertionSort)
-        insertionLabelScore.text = "$time мс; $comparisonCounter сравнений; $swapCounter обменов"
-        listCopy = ArrayList(list)
-        time = measureTimeMillis(listCopy::shellSort)
-        shellLabelScore.text = "$time мс; $comparisonCounter сравнений; $swapCounter обменов"
-        listCopy = ArrayList(list)
-        time = measureTimeMillis(listCopy::linearSort)
-        linearLabelScore.text = "$time мс; $comparisonCounter сравнений; $swapCounter присваиваний"
-    }
-
-}
-
 fun MutableList<Int>.swap(i: Int, j: Int) {
     val x = this[i]
     this[i] = this[j]
@@ -205,13 +108,15 @@ fun randomList(size: Int): MutableList<Int> {
     return (1..size).shuffled().toMutableList()
 }
 
-private fun Container.addWithFont(component: Component) {
-    component.font = MainFrame.myFont
+fun Container.addWithFont(component: Component) {
+    component.font = MY_FONT
     add(component)
 }
 
+val MY_FONT = Font(null, Font.BOLD, 18)
+
 fun main() {
     SwingUtilities.invokeLater {
-        MainFrame(1280, 720)
+        ChooseFrame(640, 360)
     }
 }
