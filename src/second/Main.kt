@@ -34,6 +34,7 @@ class MainFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 2"), Actio
     private val myFont = Font(null, Font.BOLD, 18)
 
     private var list: MutableList<Int> = MutableList(MAX_N + 1) { Random.nextInt(10) }
+
     init {
         for (i in 1 until list.size) {
             list[i] += list[i - 1]
