@@ -340,8 +340,8 @@ class MainFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 3"), Actio
         }
         val (timeO, countO, foundO) = listO
         val (timeL, countL, foundL) = listL
-        linkTime.text = "$timeL ms ${countL / 10000.0} сравнений $foundL элементов найдено"
-        openTime.text = "$timeO ms ${countO / 10000.0} сравнений $foundO элементов найдено"
+        linkTime.text = "$timeL мс ${countL / 10000.0} сравнений $foundL элементов найдено"
+        openTime.text = "$timeO мс ${countO / 10000.0} сравнений $foundO элементов найдено"
     }
 
     private fun Container.addWithFont(component: Component) {
