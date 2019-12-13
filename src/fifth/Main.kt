@@ -68,7 +68,13 @@ fun MutableList<Int>.insertionSort() {
 fun MutableList<Int>.shellSort() {
     MainFrame.swapCounter = 0
     MainFrame.comparisonCounter = 0
-    var delta = size / 2
+    var delta = 1
+    var sizeCopy = size / 4
+    while (sizeCopy > 1) {
+        sizeCopy /= 2
+        delta *= 2
+        delta++
+    }
     while (delta > 0) {
         for (i in delta until size) {
             for (j in i - delta downTo 0 step delta) {

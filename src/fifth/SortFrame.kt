@@ -2,6 +2,7 @@ package fifth
 
 import java.awt.*
 import javax.swing.*
+import kotlin.random.Random
 
 /**
  * 12/12/2019
@@ -27,7 +28,9 @@ class SortFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 4") {
 
     private var htmlTable = ""
 
-    private val list = MutableList(20) { it + 1 }
+    private val shellList = MutableList(20) { it + 1 }
+    private val list = MutableList(10) { it + 1 }
+    private val linearList = MutableList(10) { it + 1 }
 
     init {
         defaultCloseOperation = DISPOSE_ON_CLOSE
@@ -80,14 +83,14 @@ class SortFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 4") {
 
         sortButton.addActionListener {
             list.shuffle()
+            shellList.shuffle()
             htmlTable = "<html><table>"
-            htmlTable += list.joinToString(prefix = "<tr><td>", separator = "</td><td>", postfix = "</td></tr>")
             when (type) {
                 0 -> list.bubbleSort()
                 1 -> list.selectionSort()
                 2 -> list.insertionSort()
-                3 -> list.shellSort()
-                4 -> list.linearSort()
+                3 -> shellList.shellSort()
+                4 -> linearList.linearSort()
             }
             htmlTable += "</table></html>"
             tableLabel.text = htmlTable
@@ -120,13 +123,14 @@ class SortFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 4") {
         })
     }
 
-    fun MutableList<Int>.swap(i: Int, j: Int) {
+    private fun MutableList<Int>.swap(i: Int, j: Int) {
         val x = this[i]
         this[i] = this[j]
         this[j] = x
     }
 
-    fun MutableList<Int>.bubbleSort() {
+    private fun MutableList<Int>.bubbleSort() {
+        htmlTable += joinToString(prefix = "<tr><td>", separator = "</td><td>", postfix = "</td></tr>")
         for (i in size - 1 downTo 1) {
             var flag = true
             for (j in 0 until i) {
@@ -135,12 +139,13 @@ class SortFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 4") {
                     flag = false
                 }
             }
-            htmlTable += list.joinToString(prefix = "<tr><td>", separator = "</td><td>", postfix = "</td></tr>")
+            htmlTable += joinToString(prefix = "<tr><td>", separator = "</td><td>", postfix = "</td></tr>")
             if (flag) break
         }
     }
 
-    fun MutableList<Int>.selectionSort() {
+    private fun MutableList<Int>.selectionSort() {
+        htmlTable += joinToString(prefix = "<tr><td>", separator = "</td><td>", postfix = "</td></tr>")
         for (i in size - 1 downTo 1) {
             var max = 0
             for (j in 1..i) {
@@ -149,11 +154,12 @@ class SortFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 4") {
                 }
             }
             swap(max, i)
-            htmlTable += list.joinToString(prefix = "<tr><td>", separator = "</td><td>", postfix = "</td></tr>")
+            htmlTable += joinToString(prefix = "<tr><td>", separator = "</td><td>", postfix = "</td></tr>")
         }
     }
 
-    fun MutableList<Int>.insertionSort() {
+    private fun MutableList<Int>.insertionSort() {
+        htmlTable += joinToString(prefix = "<tr><td>", separator = "</td><td>", postfix = "</td></tr>")
         for (i in 1 until size) {
             var pos = i
             while (pos > 0 && this[pos - 1] > this[i]) {
@@ -161,12 +167,19 @@ class SortFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 4") {
             }
             val x = removeAt(i)
             add(pos, x)
-            htmlTable += list.joinToString(prefix = "<tr><td>", separator = "</td><td>", postfix = "</td></tr>")
+            htmlTable += joinToString(prefix = "<tr><td>", separator = "</td><td>", postfix = "</td></tr>")
         }
     }
 
-    fun MutableList<Int>.shellSort() {
-        var delta = size / 2
+    private fun MutableList<Int>.shellSort() {
+        htmlTable += joinToString(prefix = "<tr><td>", separator = "</td><td>", postfix = "</td></tr>")
+        var delta = 1
+        var sizeCopy = size / 4
+        while (sizeCopy > 1) {
+            sizeCopy /= 2
+            delta *= 2
+            delta++
+        }
         while (delta > 0) {
             for (i in delta until size) {
                 for (j in i - delta downTo 0 step delta) {
@@ -178,11 +191,17 @@ class SortFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 4") {
             }
 
             delta /= 2
-            htmlTable += list.joinToString(prefix = "<tr><td>", separator = "</td><td>", postfix = "</td></tr>")
+            htmlTable += joinToString(
+                prefix = "<tr><td>",
+                separator = "</td><td>",
+                postfix = "</td></tr>"
+            )
         }
     }
 
-    fun MutableList<Int>.linearSort() {
+    private fun MutableList<Int>.linearSort() {
+        replaceAll { Random.nextInt(-10, 10) }
+        htmlTable += joinToString(prefix = "<tr><td>", separator = "</td><td>", postfix = "</td></tr>")
         val max: Int = max()!!
         val min: Int = min()!!
         val counter = Array(max - min + 1) { 0 }
@@ -194,8 +213,23 @@ class SortFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 4") {
             for (i in 0 until count) {
                 this[pos] = value + min
                 pos++
-                htmlTable += list.joinToString(prefix = "<tr><td>", separator = "</td><td>", postfix = "</td></tr>")
+
             }
         }
+        htmlTable += List(max - min + 1) { min + it }.joinToString(
+            prefix = "<tr><td>",
+            separator = "</td><td>",
+            postfix = "</td></tr>"
+        )
+        htmlTable += counter.joinToString(
+            prefix = "<tr><td>",
+            separator = "</td><td>",
+            postfix = "</td></tr>"
+        )
+        htmlTable += joinToString(
+            prefix = "<tr><td>",
+            separator = "</td><td>",
+            postfix = "</td></tr>"
+        )
     }
 }
