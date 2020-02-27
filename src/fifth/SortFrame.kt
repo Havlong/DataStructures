@@ -28,9 +28,9 @@ class SortFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 4") {
 
     private var htmlTable = ""
 
-    private val shellList = MutableList(20) { it + 1 }
-    private val list = MutableList(10) { it + 1 }
-    private val linearList = MutableList(10) { it + 1 }
+    private val shellList = MutableList(20) { it + 11 }
+    private val list = MutableList(10) { it + 11 }
+    private val linearList = MutableList(10) { it + 11 }
 
     init {
         defaultCloseOperation = DISPOSE_ON_CLOSE
@@ -162,11 +162,12 @@ class SortFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 4") {
         htmlTable += joinToString(prefix = "<tr><td>", separator = "</td><td>", postfix = "</td></tr>")
         for (i in 1 until size) {
             var pos = i
-            while (pos > 0 && this[pos - 1] > this[i]) {
+            val element = this[pos]
+            while (pos > 0 && this[pos - 1] > element) {
+                this[pos] = this[pos - 1]
                 pos--
             }
-            val x = removeAt(i)
-            add(pos, x)
+            this[pos] = element
             htmlTable += joinToString(prefix = "<tr><td>", separator = "</td><td>", postfix = "</td></tr>")
         }
     }
@@ -182,12 +183,13 @@ class SortFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 4") {
         }
         while (delta > 0) {
             for (i in delta until size) {
-                for (j in i - delta downTo 0 step delta) {
-                    if (this[j] > this[j + delta])
-                        swap(j, j + delta)
-                    else
-                        break
+                val x = this[i]
+                var pos = i - delta
+                while (pos >= 0 && this[pos] > x) {
+                    this[pos + delta] = this[pos]
+                    pos -= delta
                 }
+                this[pos + delta] = x
             }
 
             delta /= 2

@@ -104,7 +104,7 @@ class MainFrame(sizeX: Int, sizeY: Int) : JFrame("Data Structures № 4"), Actio
         insertionLabelScore.text = "$time мс; $comparisonCounter сравнений; $swapCounter обменов"
         listCopy = ArrayList(list)
         time = measureTimeMillis(listCopy::shellSort)
-        shellLabelScore.text = "$time мс; $comparisonCounter сравнений; $swapCounter обменов"
+        shellLabelScore.text = "$time мс; $comparisonCounter сравнений; $swapCounter присваиваний"
         listCopy = ArrayList(list)
         time = measureTimeMillis(listCopy::linearSort)
         linearLabelScore.text = "$time мс; $comparisonCounter сравнений; $swapCounter присваиваний"
